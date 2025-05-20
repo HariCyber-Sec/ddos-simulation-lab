@@ -17,6 +17,8 @@ Simulate a simple DDoS (SYN flood) attack on a Metasploitable 2 VM from Kali Lin
 
 ## Detailed Methodology
 
+### Attack 1: Spoofed SYN Flood:
+This command sends a flood of TCP SYN packets to the victim (192.168.56.101) using a spoofed source IP address.
 ### 1.
 Started metasploit 2 and checked ```ifconfig``` the ip address of the victim machine.
 ![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/1.jpg)
@@ -48,30 +50,25 @@ As a result of the sustained SYN flood attack, the DVWA application running in t
 This command simulates a DDoS SYN flood attack where the attacker overwhelms the target with fake TCP connection attempts, exhausting its resources. The use of spoofed IP (-a) makes it harder to trace the attacker and prevents proper TCP handshakes. This can lead to service disruption, as seen with  DVWA crash.
 ![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/15.jpg)
 
-* `-S`: SYN flag
-* `--flood`: send packets as fast as possible
-* `-V`: verbose mode
+### Attack 2: Random Source SYN Flood:
+This version of the SYN flood sends randomized TCP SYN packets with random fake source IPs and custom payload size to simulate a large-scale DDoS attack.
+### 1.
+As with the previous test, packet capture was initiated using Wireshark on the victim machine, maintaining identical network and service conditions to observe the traffic pattern during this attack.
+![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/18.jpg)
+### 2.
+We initiated a simulated DDoS attack using hping3 with the following command:
+`hping3 -S 192.168.56.101 -d 100 -p 80 --flood --rand-source`
+This command launches a high-volume SYN flood attack targeting port 80 of the victim machine, sending packets with random spoofed source IPs and a custom payload size, effectively mimicking traffic from multiple attackers.
+![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/19.jpg)
+This simulates a Distributed Denial of Service (DDoS) scenario, where thousands of spoofed clients (simulated by --rand-source) bombard a server with TCP connection attempts, eventually overwhelming its resources and making it unavailable for legitimate users.
+### 3.
+While observing the packets in Wireshark, you can observe that while the destination IP remains constant (192.168.56.101), the source IP addresses vary with each packet. This effectively mimics a Distributed Denial of Service (DDoS) attack, where the target is overwhelmed by traffic seemingly coming from multiple different machines.
+![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/20.jpg)
+### 4.
+This screenshot shows a **successful SYN flood attack** using `hping3` with randomized source IPs. Over **133,000 spoofed SYN packets** were sent to the target `192.168.56.101` on port 80, with **100% packet loss**—indicating the target server was overwhelmed and unable to respond. This confirms that the attack effectively simulated a **DoS condition**, potentially making the service unresponsive.
+![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/23.jpg)
 
-### 2. SYN Flood with Spoofed Source IP
-
-```bash
-hping3 -S 192.168.56.102 -a 10.10.10.10 -p 80 --flood
-```
-
-* `-a`: spoofed IP address
-* `-p`: destination port
-
-### 3. SYN Flood with Randomized Source IPs & Payload
-
-```bash
-hping3 -S 192.168.56.102 -d 120 -p 80 --flood --rand-source
-```
-
-* `-d`: data size of each packet (in bytes)
-* `--rand-source`: use random source IPs
-
-> 📌 Tip: Run all commands as root for full functionality
-
+ 
 ---
 
 ## 🧪 Observations During Attack
@@ -80,38 +77,15 @@ hping3 -S 192.168.56.102 -d 120 -p 80 --flood --rand-source
 * Network became unresponsive to ping after sustained SYN flooding
 * Wireshark captured high volume of SYN packets, some with spoofed or random IPs
 
----
-
-## 🔍 Wireshark Filters Used
-
-To analyze SYN flood pattern:
-
-```wireshark
-tcp.flags.syn == 1 && tcp.flags.ack == 0
-```
-
-To monitor TCP connections:
-
-```wireshark
-tcp.analysis.flags
-```
-
+ 
 ---
 
 ## 📂 Files
 
-* `wireshark-captures/ddos-attack.pcapng`: Full capture of SYN flood
-* `scripts/hping3_ddos.sh`: Simple bash script to run attack variants
+* `wireshark-captures/ddos-packets.zip`: Full capture of SYN flood
+* `wireshark-captures/ddos-rand.zip`:  Full capture of randomized TCP SYN flood
 
----
-
-## 📸 Screenshots Collected
-
-* ![Kali attack terminal](../screenshots/kali-attack.png)
-* ![Metasploitable CPU usage](../screenshots/metasploitable-target.png)
-* ![Wireshark SYN flood](../screenshots/wireshark-analysis.png)
-* ![Random IP SYN packets](../screenshots/random-source-syn.png)
-* ![Spoofed IP attack](../screenshots/spoofed-ip-syn.png)
+ 
 
 ---
 
