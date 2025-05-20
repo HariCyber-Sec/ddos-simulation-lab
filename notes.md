@@ -30,9 +30,23 @@ Accessed the victim machine by navigating to `http://192.168.56.101/` in the bro
 ### 4.
 Navigated to the DVWA application, and logged in to monitor real-time behavior and performance impact during the DDoS attack.
 ![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/4.jpg)
-
-
-
+### 5.
+Launched Wireshark to begin capturing network packets for analysis during the attack.
+![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/8.jpg)
+### 6.
+Initiated a SYN flood attack from the Kali terminal using the following command:
+`hping3 -S 192.168.56.101 -a 192.168.22.11 -p 80 --flood`
+This command sends a continuous stream of TCP SYN packets to port 80 on the target IP (192.168.56.101) while spoofing the source IP address as 192.168.22.11. The -S flag sets the SYN bit, initiating half open TCP handshakes that are never completed, overwhelming the target's network stack. The --flood option maximizes the packet send rate, aiming to exhaust the victim's resources and simulate a denial of service condition.
+![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/11.jpg)
+### 7.
+Wireshark captured a flood of incoming TCP SYN packets resulting from the spoofed SYN flood attack, clearly indicating abnormal traffic patterns aimed at overwhelming the target system's resources.
+![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/12.jpg)
+### 8.
+As a result of the sustained SYN flood attack, the DVWA application running in the browser became unresponsive and eventually crashed, demonstrating the denial-of-service effect on the target system.
+![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/14.jpg)
+### 9.
+This command simulates a DDoS SYN flood attack where the attacker overwhelms the target with fake TCP connection attempts, exhausting its resources. The use of spoofed IP (-a) makes it harder to trace the attacker and prevents proper TCP handshakes. This can lead to service disruption, as seen with  DVWA crash.
+![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/15.jpg)
 
 * `-S`: SYN flag
 * `--flood`: send packets as fast as possible
