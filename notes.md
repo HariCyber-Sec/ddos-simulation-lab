@@ -20,6 +20,18 @@ Simulate a simple DDoS (SYN flood) attack on a Metasploitable 2 VM from Kali Lin
 ### 1.
 Started metasploit 2 and checked ```ifconfig``` the ip address of the victim machine.
 ![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/1.jpg)
+### 2.
+Logged into kali and ping the victim machine to check the network connection.
+![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/5.jpg)
+ping was a success.
+### 3.
+Accessed the victim machine by navigating to `http://192.168.56.101/` in the browser using an unsecured HTTP connection.
+![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/2.jpg)
+### 4.
+Navigated to the DVWA application, and logged in to monitor real-time behavior and performance impact during the DDoS attack.
+![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/4.jpg)
+
+
 
 
 * `-S`: SYN flag
