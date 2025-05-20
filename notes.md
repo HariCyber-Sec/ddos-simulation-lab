@@ -2,7 +2,7 @@
 
 ## 🧠 Objective
 
-Simulate a simple DDoS (SYN flood) attack on a Metasploitable 2 VM from Kali Linux and analyze the packet traffic using Wireshark.
+Simulate a DoS/DDoS (SYN flood) attack on a Metasploitable 2 VM from Kali Linux and analyze the packet traffic using Wireshark.
 
 ---
 
@@ -12,6 +12,7 @@ Simulate a simple DDoS (SYN flood) attack on a Metasploitable 2 VM from Kali Lin
 * **Target**: Metasploitable 2
 * **Monitor**: Wireshark running on attacker machine
 * **Virtualization**: VirtualBox with Host-Only Adapter
+* **Tool Used**: hping3, Wireshark
 
 ---
 
@@ -76,6 +77,8 @@ This screenshot shows a **successful SYN flood attack** using `hping3` with rand
 * CPU usage on Metasploitable 2 spiked
 * Network became unresponsive to ping after sustained SYN flooding
 * Wireshark captured high volume of SYN packets, some with spoofed or random IPs
+* The victim machine experienced 100% packet loss
+* DVWA became unresponsive due to the flood
 
  
 ---
@@ -85,16 +88,36 @@ This screenshot shows a **successful SYN flood attack** using `hping3` with rand
 * `wireshark-captures/ddos-packets.zip`: Full capture of SYN flood
 * `wireshark-captures/ddos-rand.zip`:  Full capture of randomized TCP SYN flood
 
- 
 
 ---
+
 
 ## ✅ Summary
 
-This simulation demonstrates how different types of SYN flood attacks (including spoofed and randomized source IPs) generate abnormal traffic that can be identified using packet inspection tools like Wireshark. All actions were performed in an ethical, isolated test lab.
+The SYN flood attacks using hping3 were successfully executed and validated through network monitoring. This simulation demonstrated the impact of DoS/DDoS in a controlled lab setup and reinforced core principles of network security monitoring and threat simulation.All actions were performed in an ethical, isolated test lab.
 
 ---
+### Takeaways
 
+- Denial-of-Service (DoS) attacks can be effectively simulated using tools like hping3, helping security professionals understand network 
+  vulnerabilities.
+
+- IP spoofing and randomized packet flooding can mimic Distributed DoS (DDoS) scenarios in controlled lab environments.
+
+- Wireshark plays a critical role in visualizing and analyzing traffic anomalies during such simulations.
+
+- These attacks highlight the importance of rate limiting, SYN cookies, and firewall rules in defending against real-world threats.
+
+- Proactive testing helps organizations validate their incident detection and response strategies before facing actual attacks.
+  
+---
 ## ⚠️ Disclaimer
 
 This project is for **educational purposes only** and was performed in a controlled lab environment. Never use these techniques on systems you do not own or have explicit permission to test.
+
+
+---
+## 🧪 Attack Command Used
+```bash
+hping3 -S <TARGET_IP> -a <Spoof_IP> -p <port no> --flood
+hping3 -S <TARGET_IP> -d <data size> -p <port no> --flood --rand-source
