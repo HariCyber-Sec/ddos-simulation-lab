@@ -17,11 +17,10 @@ Simulate a simple DDoS (SYN flood) attack on a Metasploitable 2 VM from Kali Lin
 
 ## Detailed Methodology
 
-### 1. Basic SYN Flood
+### 1.
+Started metasploit 2 and checked ```ifconfig``` the ip address of the victim machine.
+![Ddos lab](https://github.com/HariCyber-Sec/ddos-simulation-lab/blob/main/screenshots/1.jpg)
 
-```bash
-hping3 -S --flood -V 192.168.56.102
-```
 
 * `-S`: SYN flag
 * `--flood`: send packets as fast as possible
