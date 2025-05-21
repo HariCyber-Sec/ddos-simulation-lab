@@ -14,15 +14,6 @@ This simulation was conducted in a fully **offline lab environment** for educati
 - dvwa (for checking ir time crash)
  
 ---
+# 📝 Detailed notes in : - notes.md   
 
-## 🎯 Objective
-- Simulate DDoS using `hping3`
-- Capture traffic using Wireshark
-- Analyze attack signature and behavior
-
----
-
-## 🧪 Attack Command Used
-```bash
-hping3 -S <TARGET_IP> -a <Spoof_IP> -p <port no> --flood
-hping3 -S <TARGET_IP> -d <data size> -p <port no> --flood --rand-source
+ 
